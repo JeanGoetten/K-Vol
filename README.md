@@ -1,7 +1,7 @@
 # K-Vol
 
 
-Simples Indicador de preço a partir do volume e das intensões no book.
+Simples Indicador de preço a partir do volume e das intenções no book.
 
 ![Alt text](img.png?raw=true "BTCUSDT on Binance Exchange evolution price compared in real time")
 
