@@ -5,10 +5,13 @@
 
 ### To do: 
 
-```seq
-Trading simulator->Price predictor display
-Margin of error define and auto-calculate displaying->UI improvement
-```
+
+
+- [ ] Trading simulator 
+- [ ] Price predictor display
+- [ ] Margin of error define and auto-calculate displaying 
+- [ ] UI improvement
+
 
 ### Suport this: 
 
