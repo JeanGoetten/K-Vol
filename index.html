@@ -1,0 +1,74 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>K-Tangle Plot</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="socket.io/socket.io.js"></script>
+    </script>
+</head>
+<body>
+    <div id="chart"></div>
+    <div id="graph"></div>
+        <script>
+            var get_data
+            const socket = io()
+            var time = new Date()
+            Plotly.plot('chart',[
+                {
+                    y: [get_data],
+                    mode:'lines',
+                    name: 'UP',
+                    line: {
+                        dash: 'dashdot',
+                        width: 2,
+                        color: 'blue',
+                        shape: 'spline'
+                    }
+                }
+                , {
+                    y: [get_data],
+                    mode:'lines+markers',
+                    name: 'PRICE',
+                    line: {
+                        dash: 'solid',
+                        width: 1,
+                        color: 'black',
+                        shape: 'spline'
+                    },
+                }
+                , {
+                    y: [get_data],
+                    mode:'lines+markers',
+                    name: 'IDEAL',
+                    line: {
+                        dash: 'dot',
+                        width: 4,
+                        color: 'lightgreen',
+                        shape: 'spline'
+                    },
+                }, {
+                    y: [get_data],
+                    mode:'lines',
+                    name: 'DOWN', 
+                    line: {
+                        dash: 'dashdot',
+                        width: 2,
+                        color: 'red',
+                        shape: 'spline'
+                    }
+                }
+            ])
+             socket.on('data', (data)=>{
+                get_data = data
+                console.log(get_data)
+                Plotly.extendTraces('chart',{y:[[get_data.up_price], 
+                                                [get_data.price], 
+                                                [get_data.ideal_price], 
+                                                [get_data.down_price]
+                                            ]}, [0, 1, 2, 3])
+            })
+        </script>
+</body>
+</html>

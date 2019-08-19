@@ -1,0 +1,27 @@
+{
+  "name": "k-vol",
+  "version": "1.0.0",
+  "description": "Crypto indicator",
+  "main": "index.js",
+  "start": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "selbstdenker",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "node-binance-api": "^0.9.5",
+    "opn": "^6.0.0",
+    "socket.io": "^2.2.0"
+  },
+  "bin": "index.js",
+  "pkg":{
+    "assets":[
+      "view/**/*"
+    ],
+    "target":[
+      "node7"
+    ]
+  }
+}
