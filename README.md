@@ -10,6 +10,8 @@
 - [ ] Trading simulator 
 - [ ] Price predictor display
 - [ ] Margin of error define and auto-calculate displaying 
+- [ ] Real trader
+- [ ] Configurable auto trader 
 - [ ] UI improvement
 
 
