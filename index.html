@@ -104,7 +104,7 @@
                 }
             })
             
-
+            var cnt2 = 0
             Plotly.plot('graph',[
                 {
                     y: [get_data],
@@ -158,6 +158,15 @@
                                                 [get_data.ideal_price], 
                                                 [get_data.margin_down_h]
                                             ]}, [0, 1, 2, 3])
+
+                cnt2++
+                if(cnt2 > 600){
+                    Plotly.relayout('graph', {
+                        xaxis: {
+                            range: [cnt-600, cnt]
+                        }
+                    })
+                }
             })
         </script>
         2019 - MIT License
