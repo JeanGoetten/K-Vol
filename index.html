@@ -16,12 +16,22 @@
         <script>
             var get_data
             const socket = io()
-            var time = new Date()
             Plotly.plot('chart',[
                 {
                     y: [get_data],
                     mode:'lines',
-                    name: 'UP',
+                    name: 'MARGIN UP MIN',
+                    line: {
+                        dash: 'dashdot',
+                        width: 4,
+                        color: 'blue',
+                        shape: 'spline'
+                    }
+                }
+                , {
+                    y: [get_data],
+                    mode:'lines',
+                    name: 'MARGIN UP SEC',
                     line: {
                         dash: 'dashdot',
                         width: 2,
@@ -32,7 +42,7 @@
                 , {
                     y: [get_data],
                     mode:'lines+markers',
-                    name: 'PRICE',
+                    name: 'REAL PRICE',
                     line: {
                         dash: 'solid',
                         width: 1,
@@ -43,7 +53,7 @@
                 , {
                     y: [get_data],
                     mode:'lines+markers',
-                    name: 'IDEAL',
+                    name: 'IDEAL PRICE',
                     line: {
                         dash: 'dot',
                         width: 4,
@@ -53,10 +63,88 @@
                 }, {
                     y: [get_data],
                     mode:'lines',
-                    name: 'DOWN', 
+                    name: 'MARGIN DOWN SEC', 
                     line: {
                         dash: 'dashdot',
                         width: 2,
+                        color: 'red',
+                        shape: 'spline'
+                    }
+                }, {
+                    y: [get_data],
+                    mode:'lines',
+                    name: 'MARGIN DOWN MIN', 
+                    line: {
+                        dash: 'dashdot',
+                        width: 4,
+                        color: 'red',
+                        shape: 'spline'
+                    }
+                }
+            ])
+            var cnt = 0 
+             socket.on('data', (data)=>{
+                cnt++
+                get_data = data
+                console.log(get_data)
+                Plotly.extendTraces('chart',{y:[[get_data.margin_up_m], 
+                                                [get_data.margin_up_s],
+                                                [get_data.price], 
+                                                [get_data.ideal_price], 
+                                                [get_data.margin_down_s], 
+                                                [get_data.margin_down_m]
+                                            ]}, [0, 1, 2, 3, 4, 5])
+
+                if(cnt > 60){
+                    Plotly.relayout('chart', {
+                        xaxis: {
+                            range: [cnt-60, cnt]
+                        }
+                    })
+                }
+            })
+            
+
+            Plotly.plot('graph',[
+                {
+                    y: [get_data],
+                    mode:'lines',
+                    name: 'MARGIN UP HOUR',
+                    line: {
+                        dash: 'dashdot',
+                        width: 6,
+                        color: 'blue',
+                        shape: 'spline'
+                    }
+                }
+                , {
+                    y: [get_data],
+                    mode:'lines+markers',
+                    name: 'REAL PRICE',
+                    line: {
+                        dash: 'solid',
+                        width: 1,
+                        color: 'black',
+                        shape: 'spline'
+                    },
+                }
+                , {
+                    y: [get_data],
+                    mode:'lines+markers',
+                    name: 'IDEAL PRICE',
+                    line: {
+                        dash: 'dot',
+                        width: 4,
+                        color: 'lightgreen',
+                        shape: 'spline'
+                    },
+                }, {
+                    y: [get_data],
+                    mode:'lines',
+                    name: 'MARGIN DOWN HOUR', 
+                    line: {
+                        dash: 'dashdot',
+                        width: 6,
                         color: 'red',
                         shape: 'spline'
                     }
@@ -65,10 +153,10 @@
              socket.on('data', (data)=>{
                 get_data = data
                 console.log(get_data)
-                Plotly.extendTraces('chart',{y:[[get_data.up_price], 
+                Plotly.extendTraces('graph',{y:[[get_data.margin_up_h],
                                                 [get_data.price], 
                                                 [get_data.ideal_price], 
-                                                [get_data.down_price]
+                                                [get_data.margin_down_h]
                                             ]}, [0, 1, 2, 3])
             })
         </script>

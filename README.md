@@ -1,4 +1,4 @@
-# K-Vol
+# K-Vol 0.01
 
 
 Simples Indicador de preço a partir do volume e das intensões no book.
