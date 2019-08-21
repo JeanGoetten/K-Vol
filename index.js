@@ -20,20 +20,41 @@ io.on('connection', (socket)=>{
     console.log('new connection', socket.id)
 
     var margin_down_s = 0
+    var margin_down_s_5 = 0
     var margin_down_m = 0
-    var margin_down_h = 0
     var margin_up_s = 0
+    var margin_up_s_5 = 0
     var margin_up_m = 0
-    var margin_up_h = 0
+    var deep_ask_s = 0
+    var deep_ask_s_5 = 0
+    var deep_ask_m = 0
+    var deep_bid_s = 0
+    var deep_bid_s_5 = 0
+    var deep_bid_m = 0
+    //Precision variables
+    var ideal_price_s_precision = 0
+    var ideal_price_s_error = 0
+    var ideal_price_5s_precision = 0
+    var ideal_price_5s_error = 0
+    var ideal_price_60_precision = 0
+    var ideal_price_60_error = 0
+
+    var ideal_price_s_precision_tax = 0
+    var ideal_price_5s_precision_tax = 0
+    var ideal_price_60_precision_tax = 0
+
+    var tax_1_save = 0
+    var tax_5_save = 0
+    var tax_60_save = 0
     setInterval(()=>{
         binance.prevDay('BTCUSDT', (error, prevDay, symbol) => {
             var U_vol = prevDay.quoteVolume //universal volume per day      
             const U_sec_tot = 86400 //seconds per day
+            const U_sec_tot_5 = 17280 //5 seconds per day
             const U_min_tot = 1440 //minutos per day
-            const U_hour_tot = 24 //hours per day
             var Ls = U_vol/U_sec_tot //universal volume per seconds
+            var Ls5 = U_vol/U_sec_tot_5 //universal volume per 5 seconds
             var Lm = U_vol/U_min_tot //universal volume per minutes
-            var Lh = U_vol/U_hour_tot //universal volume per hour
     
             binance.depth("BTCUSDT", (error, depth, symbol) => {
                 var ask_update = depth.asks
@@ -60,17 +81,18 @@ io.on('connection', (socket)=>{
                             
                     if(acumulate_ask <= Ls){
                         margin_up_s = price_ask[i]
-                        console.log("Depth ask s", price_ask.length)
+                        deep_ask_s = price_ask.length
+                    }
+                    if(acumulate_ask <= Ls5){
+                        margin_up_s_5 = price_ask[i]
+                        deep_ask_s_5 = price_ask.length
                     }
                     if(acumulate_ask <= Lm){
                         margin_up_m = price_ask[i]
-                        console.log("Depth ask m", price_ask.length)
-                    }
-                    if(acumulate_ask <= Lh){
-                        margin_up_h = price_ask[i]
+                        deep_ask_m = price_ask.length
                     }
                 }    
-    
+
                 var result_bid = [];
                 for(var i in bid_update){
                     result_bid.push([i, bid_update [i]])
@@ -94,38 +116,82 @@ io.on('connection', (socket)=>{
                     
                     if(acumulate_bid <= Ls){
                         margin_down_s = price_bid[i]
-                        console.log("Depth bid s", price_bid.length)
+                        deep_bid_s = price_bid.length
+                    }
+                    if(acumulate_bid <= Ls5){
+                        margin_down_s_5 = price_bid[i]
+                        deep_bid_s_5 = price_bid.length
                     }
                     if(acumulate_bid <= Lm){
                         margin_down_m = price_bid[i]
-                        console.log("Depth bid m", price_bid.length)
-                    }
-                    if(acumulate_bid <= Lh){
-                        margin_down_h = price_bid[i]
+                        deep_bid_m = price_bid.length
                     }
                 }                   
                 binance.prices(['BTCUSDT'], (error, ticker) => {
                     try{
                         var price = ticker.BTCUSDT
-                        console.log(ticker.BTCUSDT)
-                        var ideal_price = (Number(margin_down_m) + Number(margin_up_m))/2
+                        var ideal_price_s = (Number(margin_down_s) + Number(margin_up_s))/2
+                        var ideal_price_s_5 = (Number(margin_down_s_5) + Number(margin_up_s_5))/2
+                        var ideal_price_m = (Number(margin_down_m) + Number(margin_up_m))/2
+
+                        //SIMPLE CORRELATION TEST
+                        if(ideal_price_s == price){
+                            ideal_price_s_precision++
+                        }else{
+                            ideal_price_s_error++
+                        }
+                        if(ideal_price_s_5 == price){
+                            ideal_price_5s_precision++
+                        }else{
+                            ideal_price_5s_error++
+                        }
+                        if(ideal_price_m == price){
+                            ideal_price_60_precision++
+                        }else{
+                            ideal_price_60_error++
+                        }
                             
+                        ideal_price_s_precision_tax = (ideal_price_s_precision/(ideal_price_s_precision + ideal_price_s_error))*100                       
+                        if(ideal_price_s_precision_tax > tax_1_save){
+                            tax_1_save = ideal_price_s_precision_tax
+                        }
+                        ideal_price_5s_precision_tax = (ideal_price_5s_precision/(ideal_price_5s_precision + ideal_price_5s_error))*100 
+                        if(ideal_price_5s_precision_tax > tax_5_save){
+                            tax_5_save = ideal_price_5s_precision_tax
+                        }
+                        ideal_price_60_precision_tax = (ideal_price_60_precision/(ideal_price_60_precision + ideal_price_60_error))*100 
+                        if(ideal_price_60s_precision_tax > tax_60_save){
+                            tax_60_save = ideal_price_60s_precision_tax
+                        }
+                        
+                        console.log("Maior precisão 01 segundos: ", tax_1_save)
+                        console.log("Maior precisão 05 segundos: ", tax_5_save)
+                        console.log("Maior precisão 60 segundos: ", tax_60_save)
+
+
                         var data_set = {
                             "price":        price,
-                            "ideal_price":  ideal_price,
+                            "ideal_price_s":  ideal_price_s,
+                            "ideal_price_s_5":  ideal_price_s_5,
+                            "ideal_price_m":  ideal_price_m,
                             "margin_up_s":     margin_up_s,
+                            "margin_up_s_5":     margin_up_s_5,
                             "margin_up_m":     margin_up_m,
-                            "margin_up_h":     margin_up_h,
                             "margin_down_s":   margin_down_s,
+                            "margin_down_s_5":   margin_down_s_5,
                             "margin_down_m":   margin_down_m,
-                            "margin_down_h":   margin_down_h
+                            "deep_ask_s": deep_ask_s,
+                            "deep_ask_s_5": deep_ask_s_5,
+                            "deep_ask_m": deep_ask_m,
+                            "deep_bid_s": deep_bid_s,
+                            "deep_bid_s_5": deep_bid_s_5,
+                            "deep_bid_m": deep_bid_m
                         }
-        
                         socket.emit('data', data_set)
-                        // console.log("Ask depth: ", result_ask.length)
-                        // console.log("Bid depth: ", result_bid.length)
+                        
                     }catch{
-                        return error
+                        //console.log(error)
+                        return error              
                     }
                 })
             })
