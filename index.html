@@ -10,7 +10,7 @@
 </head>
 <body>
     <h1><a href="https://github.com/Selbstdenker/K-Vol">K-VOL 0.01</a></h1>
-    <h3>BTCUSDT - Binance </h3>Start: 1 minute
+    <h3>BTCUSDT - Binance </h3>
     <div id="chart"></div>
     <div id="graph"></div>
         <script>
@@ -20,7 +20,18 @@
                 {
                     y: [get_data],
                     mode:'lines',
-                    name: 'MARGIN UP MIN',
+                    name: 'MARGIN UP(h)',
+                    line: {
+                        dash: 'dashdot',
+                        width: 8,
+                        color: 'blue',
+                        shape: 'spline'
+                    }
+                }
+                , {
+                    y: [get_data],
+                    mode:'lines',
+                    name: 'MARGIN UP(m)',
                     line: {
                         dash: 'dashdot',
                         width: 4,
@@ -31,7 +42,7 @@
                 , {
                     y: [get_data],
                     mode:'lines',
-                    name: 'MARGIN UP SEC',
+                    name: 'MARGIN UP(s)',
                     line: {
                         dash: 'dashdot',
                         width: 2,
@@ -53,7 +64,7 @@
                 , {
                     y: [get_data],
                     mode:'lines+markers',
-                    name: 'IDEAL PRICE',
+                    name: 'PREDICTED PRICE',
                     line: {
                         dash: 'dot',
                         width: 4,
@@ -63,7 +74,7 @@
                 }, {
                     y: [get_data],
                     mode:'lines',
-                    name: 'MARGIN DOWN SEC', 
+                    name: 'MARGIN DOWN(s)', 
                     line: {
                         dash: 'dashdot',
                         width: 2,
@@ -73,10 +84,20 @@
                 }, {
                     y: [get_data],
                     mode:'lines',
-                    name: 'MARGIN DOWN MIN', 
+                    name: 'MARGIN DOWN(m)', 
                     line: {
                         dash: 'dashdot',
                         width: 4,
+                        color: 'red',
+                        shape: 'spline'
+                    }
+                }, {
+                    y: [get_data],
+                    mode:'lines',
+                    name: 'MARGIN DOWN(h)', 
+                    line: {
+                        dash: 'dashdot',
+                        width: 8,
                         color: 'red',
                         shape: 'spline'
                     }
@@ -87,83 +108,20 @@
                 cnt++
                 get_data = data
                 console.log(get_data)
-                Plotly.extendTraces('chart',{y:[[get_data.margin_up_m], 
+                Plotly.extendTraces('chart',{y:[[get_data.margin_up_h], 
+                                                [get_data.margin_up_m], 
                                                 [get_data.margin_up_s],
                                                 [get_data.price], 
                                                 [get_data.ideal_price], 
                                                 [get_data.margin_down_s], 
-                                                [get_data.margin_down_m]
-                                            ]}, [0, 1, 2, 3, 4, 5])
+                                                [get_data.margin_down_m], 
+                                                [get_data.margin_down_h], 
+                                            ]}, [0, 1, 2, 3, 4, 5, 6, 7])
 
-                if(cnt > 60){
+                if(cnt > 120){
                     Plotly.relayout('chart', {
                         xaxis: {
-                            range: [cnt-60, cnt]
-                        }
-                    })
-                }
-            })
-            
-            var cnt2 = 0
-            Plotly.plot('graph',[
-                {
-                    y: [get_data],
-                    mode:'lines',
-                    name: 'MARGIN UP HOUR',
-                    line: {
-                        dash: 'dashdot',
-                        width: 6,
-                        color: 'blue',
-                        shape: 'spline'
-                    }
-                }
-                , {
-                    y: [get_data],
-                    mode:'lines+markers',
-                    name: 'REAL PRICE',
-                    line: {
-                        dash: 'solid',
-                        width: 1,
-                        color: 'black',
-                        shape: 'spline'
-                    },
-                }
-                , {
-                    y: [get_data],
-                    mode:'lines+markers',
-                    name: 'IDEAL PRICE',
-                    line: {
-                        dash: 'dot',
-                        width: 4,
-                        color: 'lightgreen',
-                        shape: 'spline'
-                    },
-                }, {
-                    y: [get_data],
-                    mode:'lines',
-                    name: 'MARGIN DOWN HOUR', 
-                    line: {
-                        dash: 'dashdot',
-                        width: 6,
-                        color: 'red',
-                        shape: 'spline'
-                    }
-                }
-            ])
-             socket.on('data', (data)=>{
-                get_data = data
-                console.log(get_data)
-                Plotly.extendTraces('graph',{y:[[get_data.margin_up_h],
-                                                [get_data.price], 
-                                                [get_data.ideal_price], 
-                                                [get_data.margin_down_h]
-                                            ]}, [0, 1, 2, 3])
-
-                cnt2++
-                if(cnt2 > 600){
-                    Plotly.relayout('graph', {
-                        xaxis: {
-                            range: [cnt-600, cnt]
+                            range: [cnt-120, cnt]
                         }
                     })
                 }
