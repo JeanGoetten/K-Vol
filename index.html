@@ -6,13 +6,38 @@
     <title>K-VOL Plot BTCUSDT</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="socket.io/socket.io.js"></script>
-    </script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0
+        }
+        ul {
+            list-style: none; 
+            margin: 0
+        }
+        li {
+            display: inline-block;
+            margin: 0, 10px, 0, 10; 
+        }
+    </style>
 </head>
 <body>
-    <h1><a href="https://github.com/Selbstdenker/K-Vol">K-VOL 0.01</a></h1>
-    <h3>BTCUSDT - Binance </h3>
+<h1><a href="https://github.com/Selbstdenker/K-Vol">K-VOL 0.02</a></h1>
+<table style="width:90%">
+    <tr>
+        <td id="simple_data"></td>
+        <td id="deep_ask_s"></td>
+        <td id="deep_ask_s_5"></td>
+        <td id="deep_ask_m"></td>     
+    </tr>
+    <tr>
+        <td></td>
+        <td id="deep_bid_s"></td>
+        <td id="deep_bid_s_5"></td>
+        <td id="deep_bid_m"></td>
+    </tr>
+</table>
     <div id="chart"></div>
-    <div id="graph"></div>
         <script>
             var get_data
             const socket = io()
@@ -20,10 +45,10 @@
                 {
                     y: [get_data],
                     mode:'lines',
-                    name: 'MARGIN UP(h)',
+                    name: 'MARGIN UP(60)',
                     line: {
                         dash: 'dashdot',
-                        width: 8,
+                        width: 6,
                         color: 'blue',
                         shape: 'spline'
                     }
@@ -31,7 +56,7 @@
                 , {
                     y: [get_data],
                     mode:'lines',
-                    name: 'MARGIN UP(m)',
+                    name: 'MARGIN UP(05)',
                     line: {
                         dash: 'dashdot',
                         width: 4,
@@ -42,7 +67,7 @@
                 , {
                     y: [get_data],
                     mode:'lines',
-                    name: 'MARGIN UP(s)',
+                    name: 'MARGIN UP(01)',
                     line: {
                         dash: 'dashdot',
                         width: 2,
@@ -64,40 +89,65 @@
                 , {
                     y: [get_data],
                     mode:'lines+markers',
-                    name: 'PREDICTED PRICE',
+                    name: 'IDEAL PRICE(01)',
+                    line: {
+                        dash: 'dot',
+                        width: 1,
+                        color: 'lightgreen',
+                        shape: 'spline'
+                    },
+                }
+                , {
+                    y: [get_data],
+                    mode:'lines+markers',
+                    name: 'IDEAL PRICE(05)',
+                    line: {
+                        dash: 'dot',
+                        width: 2,
+                        color: 'lightgreen',
+                        shape: 'spline'
+                    },
+                }
+                , {
+                    y: [get_data],
+                    mode:'lines+markers',
+                    name: 'IDEAL PRICE(60)',
                     line: {
                         dash: 'dot',
                         width: 4,
                         color: 'lightgreen',
                         shape: 'spline'
                     },
-                }, {
+                }
+                , {
                     y: [get_data],
                     mode:'lines',
-                    name: 'MARGIN DOWN(s)', 
+                    name: 'MARGIN DOWN(01)', 
                     line: {
                         dash: 'dashdot',
                         width: 2,
                         color: 'red',
                         shape: 'spline'
                     }
-                }, {
+                }
+                , {
                     y: [get_data],
                     mode:'lines',
-                    name: 'MARGIN DOWN(m)', 
+                    name: 'MARGIN DOWN(05)', 
                     line: {
                         dash: 'dashdot',
                         width: 4,
                         color: 'red',
                         shape: 'spline'
                     }
-                }, {
+                }
+                , {
                     y: [get_data],
                     mode:'lines',
-                    name: 'MARGIN DOWN(h)', 
+                    name: 'MARGIN DOWN(60)', 
                     line: {
                         dash: 'dashdot',
-                        width: 8,
+                        width: 6,
                         color: 'red',
                         shape: 'spline'
                     }
@@ -108,15 +158,25 @@
                 cnt++
                 get_data = data
                 console.log(get_data)
-                Plotly.extendTraces('chart',{y:[[get_data.margin_up_h], 
-                                                [get_data.margin_up_m], 
+                Plotly.extendTraces('chart',{y:[[get_data.margin_up_m], 
+                                                [get_data.margin_up_s_5],
                                                 [get_data.margin_up_s],
                                                 [get_data.price], 
-                                                [get_data.ideal_price], 
+                                                [get_data.ideal_price_s], 
+                                                [get_data.ideal_price_s_5], 
+                                                [get_data.ideal_price_m], 
                                                 [get_data.margin_down_s], 
+                                                [get_data.margin_down_s_5], 
                                                 [get_data.margin_down_m], 
-                                                [get_data.margin_down_h], 
-                                            ]}, [0, 1, 2, 3, 4, 5, 6, 7])
+                                            ]}, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+
+                document.getElementById('simple_data').innerHTML = 'BTC: ' + Number(get_data.price) + ' USDT'
+                document.getElementById('deep_ask_s').innerHTML = 'Deep ask(01): ' + Number(get_data.deep_ask_s)
+                document.getElementById('deep_ask_s_5').innerHTML = 'Deep ask(05): ' + Number(get_data.deep_ask_s_5)
+                document.getElementById('deep_ask_m').innerHTML = 'Deep ask(60): ' + Number(get_data.deep_ask_m)
+                document.getElementById('deep_bid_s').innerHTML = 'Deep bid(01): ' + Number(get_data.deep_bid_s)
+                document.getElementById('deep_bid_s_5').innerHTML = 'Deep bid(05): ' + Number(get_data.deep_bid_s_5)
+                document.getElementById('deep_bid_m').innerHTML = 'Deep bid(60): ' + Number(get_data.deep_bid_m)
 
                 if(cnt > 120){
                     Plotly.relayout('chart', {
