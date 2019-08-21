@@ -60,9 +60,11 @@ io.on('connection', (socket)=>{
                             
                     if(acumulate_ask <= Ls){
                         margin_up_s = price_ask[i]
+                        console.log("Depth ask s", price_ask.length)
                     }
                     if(acumulate_ask <= Lm){
                         margin_up_m = price_ask[i]
+                        console.log("Depth ask m", price_ask.length)
                     }
                     if(acumulate_ask <= Lh){
                         margin_up_h = price_ask[i]
@@ -92,32 +94,40 @@ io.on('connection', (socket)=>{
                     
                     if(acumulate_bid <= Ls){
                         margin_down_s = price_bid[i]
+                        console.log("Depth bid s", price_bid.length)
                     }
                     if(acumulate_bid <= Lm){
                         margin_down_m = price_bid[i]
+                        console.log("Depth bid m", price_bid.length)
                     }
                     if(acumulate_bid <= Lh){
                         margin_down_h = price_bid[i]
                     }
                 }                   
                 binance.prices(['BTCUSDT'], (error, ticker) => {
-                    var price = ticker.BTCUSDT
-    
-                    var ideal_price = (Number(margin_down_m) + Number(margin_up_m))/2
-                        
-                    var data_set = {
-                        "price":        price,
-                        "ideal_price":  ideal_price,
-                        "margin_up_s":     margin_up_s,
-                        "margin_up_m":     margin_up_m,
-                        "margin_up_h":     margin_up_h,
-                        "margin_down_s":   margin_down_s,
-                        "margin_down_m":   margin_down_m,
-                        "margin_down_h":   margin_down_h
+                    try{
+                        var price = ticker.BTCUSDT
+                        console.log(ticker.BTCUSDT)
+                        var ideal_price = (Number(margin_down_m) + Number(margin_up_m))/2
+                            
+                        var data_set = {
+                            "price":        price,
+                            "ideal_price":  ideal_price,
+                            "margin_up_s":     margin_up_s,
+                            "margin_up_m":     margin_up_m,
+                            "margin_up_h":     margin_up_h,
+                            "margin_down_s":   margin_down_s,
+                            "margin_down_m":   margin_down_m,
+                            "margin_down_h":   margin_down_h
+                        }
+        
+                        socket.emit('data', data_set)
+                        // console.log("Ask depth: ", result_ask.length)
+                        // console.log("Bid depth: ", result_bid.length)
+                    }catch{
+                        return error
                     }
-    
-                socket.emit('data', data_set)
-            })
+                })
             })
         })
     }, 1000)
