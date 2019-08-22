@@ -151,24 +151,23 @@ io.on('connection', (socket)=>{
                             ideal_price_60_error++
                         }
                             
-                        ideal_price_s_precision_tax = (ideal_price_s_precision/(ideal_price_s_precision + ideal_price_s_error))*100                       
+                        ideal_price_s_precision_tax = (ideal_price_s_precision/(ideal_price_s_precision + ideal_price_s_error))*100      
                         if(ideal_price_s_precision_tax > tax_1_save){
                             tax_1_save = ideal_price_s_precision_tax
+                            console.log("Maior precisão 01 segundos: ", tax_1_save)
                         }
-                        ideal_price_5s_precision_tax = (ideal_price_5s_precision/(ideal_price_5s_precision + ideal_price_5s_error))*100 
+                        ideal_price_5s_precision_tax = (ideal_price_5s_precision/(ideal_price_5s_precision + ideal_price_5s_error))*100
                         if(ideal_price_5s_precision_tax > tax_5_save){
                             tax_5_save = ideal_price_5s_precision_tax
+                            console.log("Maior precisão 05 segundos: ", tax_5_save)
                         }
-                        ideal_price_60_precision_tax = (ideal_price_60_precision/(ideal_price_60_precision + ideal_price_60_error))*100 
-                        if(ideal_price_60s_precision_tax > tax_60_save){
-                            tax_60_save = ideal_price_60s_precision_tax
+                        ideal_price_60_precision_tax = (ideal_price_60_precision/(ideal_price_60_precision + ideal_price_60_error))*100
+                        if(ideal_price_60_precision_tax > tax_60_save){
+                            tax_60_save = ideal_price_60_precision_tax
+                            console.log("Maior precisão 60 segundos: ", tax_60_save)
+
                         }
-                        
-                        console.log("Maior precisão 01 segundos: ", tax_1_save)
-                        console.log("Maior precisão 05 segundos: ", tax_5_save)
-                        console.log("Maior precisão 60 segundos: ", tax_60_save)
-
-
+                                                                                          
                         var data_set = {
                             "price":        price,
                             "ideal_price_s":  ideal_price_s,
