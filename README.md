@@ -20,9 +20,11 @@
 
 <hr>
 
-### Suport this: 
+### Support this: 
 
-Nano: `nano_3hqtu4ureg6mcte97ocqked3xnttqnpswd4wxi9t3w51jfuiie3j8x91ie37`
+Bitcoin: 13R5Rygw7VYgirq6cm6cJkhGa3xiGAEP2m
+Ethereum: 0xcC817f467dcEb55d7E5E6bC7096ACD4d4fe1C669
+Monero: 43bURpcxShvfjhn5ybmUnwDiXb9EjivB3VGAvfsTjhJcgsjASg4Rn7zB56SGc86itCAfQLwiWEA4T9pnk1SghXii6e8JQzA
 
 <hr>
 
