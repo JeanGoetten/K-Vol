@@ -22,18 +22,18 @@
 
 ### Support this: 
 
-Bitcoin: 13R5Rygw7VYgirq6cm6cJkhGa3xiGAEP2m
+Bitcoin: 1GrGgf5mfU6PZ5HAdNLE9QLX3et49tBbYh
 
-Ethereum: 0xcC817f467dcEb55d7E5E6bC7096ACD4d4fe1C669
+Ethereum: 0xd14B9c8780B20d0821C37da481DA889B05686C87
 
-Monero: 43bURpcxShvfjhn5ybmUnwDiXb9EjivB3VGAvfsTjhJcgsjASg4Rn7zB56SGc86itCAfQLwiWEA4T9pnk1SghXii6e8JQzA
+Monero: 4BzzF8DwBc9Mik5B2rhKJLGrHB7ch3p3cQp7bCD16uRWHbiSpZUPfYEg62jgNKxkdjSuR4iqoxKa3Eb2y5uP7vZHSck1emZrFpDAKaT2bp
 
-
+Waves: 0x36940bF97f72E14aDEF6C2741ba1caCbbadCF95a
 <hr>
 
 ### Contact me:
 
-selbstdenkerdot@hotmail.com
+jeangoetten@hotmail.com
 
 
 <tr>
