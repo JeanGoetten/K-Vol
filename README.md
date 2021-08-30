@@ -1,4 +1,4 @@
-<h1 align="center">K-Vol 0.01v</h1>
+<h1 align="center">K-Vol 0.03v</h1>
 
 ### Market price indicator based on book depth and global volume
 
