@@ -5,22 +5,3 @@
 <hr>
 
 ![Alt text](img.png?raw=true "BTCUSDT on Binance Exchange evolution price compared in real time")
-
-<hr>
-
-### To do: 
-
-- [ ] Alert system
-- [ ] Trading simulator 
-- [ ] Price predictor display
-- [ ] Margin of error define and auto-calculate displaying 
-- [ ] Real trader
-- [ ] Configurable auto trader 
-- [ ] UI improvement
-
-### Contact me:
-
-jeangoetten@hotmail.com
-
-
-<tr>
